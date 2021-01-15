@@ -11,15 +11,14 @@ use Symfony\Component\Finder\Finder;
  */
 class TSPCommand extends Command
 {
-    protected static string $defaultName = 'app:tsp';
+    protected static $defaultName = 'app:tsp';
     
     /**
      * configure
      *
      * @return void
      */
-    protected function configure(): void
-    {
+    protected function configure(): void {
         $this
             ->setDescription('Solves the TSP according to the cities.txt file stored on src/Business/Documents.')
             ->setHelp('Just run the command!');
@@ -33,8 +32,7 @@ class TSPCommand extends Command
      * @param  mixed $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    protected function execute(InputInterface $input, OutputInterface $output): int {
         $cities = $this->getCities(); 
         die(var_dump($cities));
         // return this if there was no problem running the command
@@ -55,7 +53,7 @@ class TSPCommand extends Command
     private function getCities(): string {
         $contents = [];
         $finder = new Finder();
-        $finder->in('src/Business/Documents')->name('cities.txt');
+        $finder->in('src/Business/Document')->name('cities.txt');
         foreach($finder as $file) {
             $contents = $file->getContents();
         }
