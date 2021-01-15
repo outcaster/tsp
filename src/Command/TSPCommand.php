@@ -1,10 +1,10 @@
 <?php
 namespace App\Command;
 
+use App\Business\Service\CityService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * TSPCommand
@@ -12,6 +12,13 @@ use Symfony\Component\Finder\Finder;
 class TSPCommand extends Command
 {
     protected static $defaultName = 'app:tsp';
+
+    private CityService $cityService;
+    
+    public function __construct(CityService $cityService) {
+        $this->cityService = $cityService;
+        parent::__construct();
+    }
     
     /**
      * configure
@@ -24,7 +31,6 @@ class TSPCommand extends Command
             ->setHelp('Just run the command!');
     }
 
-        
     /**
      * execute
      *
@@ -33,7 +39,7 @@ class TSPCommand extends Command
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int {
-        $cities = $this->getCities(); 
+        $cities = $this->cityService->getCities();
         die(var_dump($cities));
         // return this if there was no problem running the command
         // (it's equivalent to returning int(0))
@@ -43,21 +49,4 @@ class TSPCommand extends Command
         // (it's equivalent to returning int(1))
         // return Command::FAILURE;
     }
-
-        
-    /**
-     * getCities
-     *
-     * @return string
-     */
-    private function getCities(): string {
-        $contents = [];
-        $finder = new Finder();
-        $finder->in('src/Business/Document')->name('cities.txt');
-        foreach($finder as $file) {
-            $contents = $file->getContents();
-        }
-
-        return $contents;
-    } 
 }
