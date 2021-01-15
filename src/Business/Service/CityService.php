@@ -2,26 +2,41 @@
 namespace App\Business\Service;
 
 use Symfony\Component\Finder\Finder;
-
 use App\Business\TSP\City;
+use App\Business\Exception\NoContentException;
 
 
 /**
  * CityService
  */
 class CityService 
-{
+{ 
+    /**
+     * gets cities from txt file
+     *
+     * @return City[]
+     */
     public function getCities(): array {
-        $contents = [];
+        $contents = null;
         $finder = new Finder();
-        $finder->in('src/Business/Document')->name('cities.txt');
-        foreach($finder as $file) {
+        $finder->in('src/Business/Document')->name('citiess.txt');
+        foreach ($finder as $file) {
             $contents = $file->getContents();
+        }
+
+        if ($contents == NULL) {
+            throw new NoContentException('Content file not found, or empty');
         }
 
         return $this->parse($contents);
     } 
-
+    
+    /**
+     * parse contents
+     *
+     * @param  mixed $contents
+     * @return City[]
+     */
     private function parse(string $contents): array {
         $cities = [];
         $contentsArray = explode(PHP_EOL, $contents);
@@ -31,7 +46,7 @@ class CityService
             $longitude = null;            
             $cityComponents = explode(' ', $content);
             $cityComponentLength = count($cityComponents);
-            
+
             //safeguard checks could be added here 
             $latitude  = $cityComponents[$cityComponentLength-2];
             $longitude = $cityComponents[$cityComponentLength-1];

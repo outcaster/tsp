@@ -12,9 +12,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TSPCommand extends Command
 {
     protected static $defaultName = 'app:tsp';
-
     private CityService $cityService;
     
+    /**
+     * __construct
+     *
+     * @param  mixed $cityService
+     * @return void
+     */
     public function __construct(CityService $cityService) {
         $this->cityService = $cityService;
         parent::__construct();
