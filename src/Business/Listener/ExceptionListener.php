@@ -17,8 +17,10 @@ class ExceptionListener
     public function onConsoleError(ConsoleErrorEvent $event) {
         //any additional treatment for the command exception could be here. 
         //I will keep symfony exception listener also active for more comfortability
-        $output = $event->getOutput();
-        $exception = $event->getError();
-        $output->writeln("Something went wrong trying to process your command: ".$exception->getMessage());
+        $event
+            ->getOutput()
+            ->writeln(
+                "Something went wrong trying to process your command: " . $event->getError()->getMessage()
+            );
     }
 }

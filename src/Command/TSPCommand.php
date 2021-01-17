@@ -45,13 +45,22 @@ class TSPCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $cities = $this->cityService->getCities();
-        die(var_dump($cities));
-        // return this if there was no problem running the command
-        // (it's equivalent to returning int(0))
-        return Command::SUCCESS;
+        $route = $this->cityService->calculate($cities);
 
-        // or return this if some error happened during the execution
-        // (it's equivalent to returning int(1))
-        // return Command::FAILURE;
+        $this->printRoute($route, $output);
+        return Command::SUCCESS;
+    }
+             
+    /**
+     * printRoute
+     *
+     * @param  mixed $route
+     * @param  mixed $output
+     * @return void
+     */
+    private function printRoute(array $route, OutputInterface $output): void {
+        foreach($route as $city) {
+            $output->writeln($city->getName());
+        }
     }
 }

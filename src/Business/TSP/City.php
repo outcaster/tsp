@@ -9,6 +9,7 @@ class City {
     private string $name;
     private float $latitude;
     private float $longitude;
+    private float $distanceToPreviousCity;
     
     /**
      * __construct
@@ -52,4 +53,21 @@ class City {
         return $this->longitude;
     }
 
+    /**
+     * Get $distanceToPreviousCity
+     * @return float
+     */
+    public function getDistanceToPreviousCity(): float
+    {
+        return $this->distanceToPreviousCity;
+    }
+
+    /**
+     * Set $distanceToPreviousCity
+     * @param float $distanceToPreviousCity
+     */
+    public function setDistanceToPreviousCity(float $distanceToPreviousCity)
+    {
+        $this->distanceToPreviousCity = $distanceToPreviousCity;
+    }
 }
