@@ -48,6 +48,13 @@ class TSPCommand extends Command
         $route = $this->cityService->calculate($cities);
 
         $this->printRoute($route, $output);
+        $total = 0;
+        foreach ($route as $city) {
+            $total = $total + $city->getDistanceToPreviousCity();
+        }
+
+        $output->writeln("TOTAL: ".$total);
+
         return Command::SUCCESS;
     }
              

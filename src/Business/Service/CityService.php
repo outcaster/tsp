@@ -63,9 +63,10 @@ class CityService
             $position      = null;
             $bestDistanceA = null;
             $bestDistanceB = null;
+            $distanceA     = $this->calculateDistance($newCity, $route[0]);
             for ($i = 1; $i < count($route); $i++) {
+                $distanceB = $distanceA;
                 $distanceA = $this->calculateDistance($newCity, $route[$i]);
-                $distanceB = $this->calculateDistance($newCity, $route[$i-1]);
                 if ($minDistance === null || ($distanceA + $distanceB - $route[$i]->getDistanceToPreviousCity()) < $minDistance ) {
                     $minDistance = ($distanceA + $distanceB - $route[$i]->getDistanceToPreviousCity());
                     $position    = $i; 
@@ -98,7 +99,11 @@ class CityService
             return $route;
         }
 
-        return array_reverse(array_shift($route));
+        array_shift($route);
+        $route = array_reverse($route);
+        $route[0]->getDistanceToPreviousCity(0);
+        
+        return $route;
     }
   
     /**
