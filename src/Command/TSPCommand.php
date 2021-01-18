@@ -13,7 +13,7 @@ class TSPCommand extends Command
 {
     protected static $defaultName = 'app:tsp';
     private CityService $cityService;
-    
+
     /**
      * __construct
      *
@@ -24,7 +24,7 @@ class TSPCommand extends Command
         $this->cityService = $cityService;
         parent::__construct();
     }
-    
+
     /**
      * configure
      *
@@ -57,7 +57,7 @@ class TSPCommand extends Command
 
         return Command::SUCCESS;
     }
-             
+
     /**
      * printRoute
      *

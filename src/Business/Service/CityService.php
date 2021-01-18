@@ -9,8 +9,8 @@ use App\Business\Exception\NoContentException;
 /**
  * CityService
  */
-class CityService 
-{ 
+class CityService
+{
     /**
      * gets cities from txt file
      *
@@ -30,9 +30,9 @@ class CityService
         }
 
         return $this->parse($contents);
-    } 
+    }
 
-        
+
     /**
      * calculate
      *
@@ -40,52 +40,31 @@ class CityService
      * @return City[]
      */
     public function calculate(array $cities): array {
-        $route = [];
+        $route[] = array_shift($cities);
+        $route[0]->setDistanceToPreviousCity(0);
 
-        //calculate first triangle
-        for ($i = 0; $i < 3; $i++) {
-            if (!empty($cities)) {
-                $city = array_shift($cities);
-            }
-
-            $city = $this->setDistance($city, $route);
-            $route[$i] = $city;
-        } 
-        
-        $firstCity = clone($route[array_key_first($route)]);
-        $firstCity->setDistanceToPreviousCity($this->calculateDistance(end($route), $firstCity));
-        $route[] = $firstCity;
-        
-        //add elements for each new city 
         while (!empty($cities)) {
-            $newCity       = array_shift($cities);
-            $minDistance   = null;
-            $position      = null;
-            $bestDistanceA = null;
-            $bestDistanceB = null;
-            $distanceA     = $this->calculateDistance($newCity, $route[0]);
-            for ($i = 1; $i < count($route); $i++) {
-                $distanceB = $distanceA;
-                $distanceA = $this->calculateDistance($newCity, $route[$i]);
-                if ($minDistance === null || ($distanceA + $distanceB - $route[$i]->getDistanceToPreviousCity()) < $minDistance ) {
-                    $minDistance = ($distanceA + $distanceB - $route[$i]->getDistanceToPreviousCity());
-                    $position    = $i; 
-                    $bestDistanceA = $distanceA;
-                    $bestDistanceB = $distanceB;
+            $nextCityIndex = null;
+            $nextCityDistance = null;
+            for ($i = 0; $i < count($cities); $i++) {
+                $distance = $this->calculateDistance(end($route), $cities[$i]);
+
+                if ($nextCityIndex === null || $distance < $nextCityDistance) {
+                    $nextCityIndex = $i;
+                    $nextCityDistance = $distance;
                 }
             }
 
-            $newCity->setDistanceToPreviousCity($bestDistanceB);
-            $route[$position]->setDistanceToPreviousCity($bestDistanceA);
-            array_splice($route, $position, 0, [$newCity]); 
+            $route[] = $cities[$nextCityIndex];
+            end($route)->setDistanceToPreviousCity($nextCityDistance);
+            unset($cities[$nextCityIndex]);
+            $cities = array_values($cities);
         }
-
-        $route = $this->finalize($route);
 
         return $route;
     }
 
-        
+
     /**
      * finalize
      *
@@ -95,17 +74,17 @@ class CityService
     private function finalize(array $route): array {
         if ($route[1]->getDistanceToPreviousCity() < end($route)->getDistanceToPreviousCity()) {
             array_pop($route);
-            
+
             return $route;
         }
 
         array_shift($route);
         $route = array_reverse($route);
         $route[0]->getDistanceToPreviousCity(0);
-        
+
         return $route;
     }
-  
+
     /**
      * setDistance
      *
@@ -116,7 +95,7 @@ class CityService
     private function setDistance(City $city, array $route): City {
         if (count($route) === 0) {
             $city->setDistanceToPreviousCity(0);
-            
+
             return $city;
         }
 
@@ -125,7 +104,7 @@ class CityService
 
         return $city;
     }
-        
+
     /**
      * calculateDistance
      *
@@ -148,7 +127,7 @@ class CityService
 
         return $distance;
     }
-    
+
     /**
      * parse contents
      *
@@ -161,11 +140,11 @@ class CityService
         foreach ($contentsArray as $content) {
             $cityName  = '';
             $latitude  = null;
-            $longitude = null;            
+            $longitude = null;
             $cityComponents = explode(' ', $content);
             $cityComponentLength = count($cityComponents);
 
-            //safeguard checks could be added here 
+            //safeguard checks could be added here
             $latitude  = $cityComponents[$cityComponentLength-2];
             $longitude = $cityComponents[$cityComponentLength-1];
             $cityName  = $cityComponents[0];
@@ -174,7 +153,7 @@ class CityService
                 for ($i=1; $i < $cityComponentLength-2; $i++) {
                     $cityName = $cityName . ' ' . $cityComponents[$i];
                 }
-            }  
+            }
 
             $cities[] = new City($cityName, $latitude, $longitude);
         }
