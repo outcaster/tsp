@@ -10,7 +10,7 @@ class City {
     private float $latitude;
     private float $longitude;
     private float $distanceToPreviousCity;
-    
+
     /**
      * __construct
      *
@@ -19,7 +19,8 @@ class City {
      * @param  mixed $longitude
      * @return void
      */
-    public function __construct(string $name, float $latitude, float $longitude) {
+    public function __construct(string $name, float $latitude, float $longitude)
+    {
         $this->name      = $name;
         $this->latitude  = $latitude;
         $this->longitude = $longitude;

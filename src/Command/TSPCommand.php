@@ -20,7 +20,8 @@ class TSPCommand extends Command
      * @param  mixed $cityService
      * @return void
      */
-    public function __construct(CityService $cityService) {
+    public function __construct(CityService $cityService)
+    {
         $this->cityService = $cityService;
         parent::__construct();
     }
@@ -30,7 +31,8 @@ class TSPCommand extends Command
      *
      * @return void
      */
-    protected function configure(): void {
+    protected function configure(): void
+    {
         $this
             ->setDescription('Solves the TSP according to the cities.txt file stored on src/Business/Documents.')
             ->setHelp('Just run the command!');
@@ -43,7 +45,8 @@ class TSPCommand extends Command
      * @param  mixed $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
         $cities = $this->cityService->getCities();
         $route  = $this->cityService->calculate($cities);
 
@@ -59,7 +62,8 @@ class TSPCommand extends Command
      * @param  mixed $output
      * @return void
      */
-    private function printRoute(array $route, OutputInterface $output): void {
+    private function printRoute(array $route, OutputInterface $output): void
+    {
         foreach($route as $city) {
             $output->writeln($city->getName());
         }

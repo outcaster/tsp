@@ -17,7 +17,8 @@ class CityService
      * @return City[]
      * @throws NoContentException
      */
-    public function getCities(): array {
+    public function getCities(): array
+    {
         $contents = null;
         $finder = new Finder();
         $finder->in('src/Business/Document')->name('cities.txt');
@@ -39,7 +40,8 @@ class CityService
      * @param  City[] $cities
      * @return City[]
      */
-    public function calculate(array $cities): array {
+    public function calculate(array $cities): array
+    {
         $route[] = array_shift($cities);
         $route[0]->setDistanceToPreviousCity(0);
 
@@ -71,7 +73,8 @@ class CityService
      * @param  mixed $cityB
      * @return float
      */
-    private function calculateDistance(City $cityA, City $cityB): float {
+    private function calculateDistance(City $cityA, City $cityB): float
+    {
         $deltaLat = $cityB->getLatitude() - $cityA->getLatitude();
         $deltaLon = $cityB->getLongitude() - $cityA->getLongitude();
 
@@ -98,7 +101,8 @@ class CityService
      * @param  mixed $contents
      * @return City[]
      */
-    private function parse(string $contents): array {
+    private function parse(string $contents): array
+    {
         $cities = [];
         $contentsArray = explode(PHP_EOL, $contents);
         foreach ($contentsArray as $content) {
@@ -108,7 +112,6 @@ class CityService
             $cityComponents = explode(' ', $content);
             $cityComponentLength = count($cityComponents);
 
-            //safeguard checks could be added here
             $latitude  = $cityComponents[$cityComponentLength-2];
             $longitude = $cityComponents[$cityComponentLength-1];
             $cityName  = $cityComponents[0];
