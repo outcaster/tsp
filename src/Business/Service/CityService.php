@@ -64,47 +64,6 @@ class CityService
         return $route;
     }
 
-
-    /**
-     * finalize
-     *
-     * @param  City[] $route
-     * @return City[]
-     */
-    private function finalize(array $route): array {
-        if ($route[1]->getDistanceToPreviousCity() < end($route)->getDistanceToPreviousCity()) {
-            array_pop($route);
-
-            return $route;
-        }
-
-        array_shift($route);
-        $route = array_reverse($route);
-        $route[0]->getDistanceToPreviousCity(0);
-
-        return $route;
-    }
-
-    /**
-     * setDistance
-     *
-     * @param  mixed $city
-     * @param  mixed $route
-     * @return City
-     */
-    private function setDistance(City $city, array $route): City {
-        if (count($route) === 0) {
-            $city->setDistanceToPreviousCity(0);
-
-            return $city;
-        }
-
-        $previousCity = end($route);
-        $city->setDistanceToPreviousCity($this->calculateDistance($city, $previousCity));
-
-        return $city;
-    }
-
     /**
      * calculateDistance
      *
@@ -120,7 +79,12 @@ class CityService
 
         $alpha    = $deltaLat/2;
         $beta     = $deltaLon/2;
-        $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($cityA->getLatitude())) * cos(deg2rad($cityB->getLatitude())) * sin(deg2rad($beta)) * sin(deg2rad($beta)) ;
+        $a        = sin(deg2rad($alpha))
+            * sin(deg2rad($alpha))
+            + cos(deg2rad($cityA->getLatitude()))
+            * cos(deg2rad($cityB->getLatitude()))
+            * sin(deg2rad($beta))
+            * sin(deg2rad($beta)) ;
         $c        = asin(min(1, sqrt($a)));
         $distance = 2*$earthRadius * $c;
         $distance = round($distance, 4);

@@ -45,15 +45,9 @@ class TSPCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int {
         $cities = $this->cityService->getCities();
-        $route = $this->cityService->calculate($cities);
+        $route  = $this->cityService->calculate($cities);
 
         $this->printRoute($route, $output);
-        $total = 0;
-        foreach ($route as $city) {
-            $total = $total + $city->getDistanceToPreviousCity();
-        }
-
-        $output->writeln("TOTAL: ".$total);
 
         return Command::SUCCESS;
     }
