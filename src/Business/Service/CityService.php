@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Business\Service;
 
 use Symfony\Component\Finder\Finder;
 use App\Business\TSP\City;
 use App\Business\Exception\NoContentException;
-
 
 /**
  * CityService

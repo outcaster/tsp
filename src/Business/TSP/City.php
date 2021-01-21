@@ -1,6 +1,7 @@
 <?php
-namespace App\Business\TSP;
+declare(strict_types=1);
 
+namespace App\Business\TSP;
 
 /**
  * City
@@ -19,11 +20,11 @@ class City {
      * @param  mixed $longitude
      * @return void
      */
-    public function __construct(string $name, float $latitude, float $longitude)
+    public function __construct(string $name, string $latitude, string $longitude)
     {
         $this->name      = $name;
-        $this->latitude  = $latitude;
-        $this->longitude = $longitude;
+        $this->latitude  = (float) $latitude;
+        $this->longitude = (float) $longitude;
     }
 
 

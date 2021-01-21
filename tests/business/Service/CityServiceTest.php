@@ -13,6 +13,46 @@ class CityServiceTest extends TestCase
 {
     /**
      * @test
+     * @testdox should get the cities
+     *
+     * @return void
+     */
+    public function testGetCities(): void
+    {
+        $service = new CityService();
+        $result = $service->getCities();
+
+        $this->assertIsArray($result);
+        $this->assertEquals(32, count($result));
+        foreach ($result as $city) {
+            $this->assertInstanceOf(City::class, $city);
+        }
+    }
+
+    /**
+     * @test
+     * @testdox should return a route
+     */
+    public function testCalculate(): void
+    {
+        $service = new CityService();
+        $cities  = [
+            new City('Las Venturas', 39.93, 116.40),
+            new City('Los Santos', 35.40, 139.45),
+            new City('Sanfierro', 43.8, 131.54)
+        ];
+
+        $result = $service->calculate($cities);
+
+        $this->assertIsArray($result);
+        $this->assertEquals(3, count($result));
+        foreach ($result as $city) {
+            $this->assertInstanceOf(City::class, $city);
+        }
+    }
+
+    /**
+     * @test
      * @testdox should calculate distance
      *
      * @return void
@@ -46,9 +86,9 @@ class CityServiceTest extends TestCase
         $method->setAccessible(true);
 
         $json =
-        'Beijing 39.93 116.40
-        Tokyo 35.40 139.45
-        Vladivostok 43.8 131.54';
+        'Las Venturas 39.93 116.40
+        Los Santos 35.40 139.45
+        Sanfierro 43.8 131.54';
         $result =  $method->invokeArgs($service, [$json]);
 
         $this->assertIsArray($result);
