@@ -44,7 +44,6 @@ class CityService
     public function calculate(array $cities): array
     {
         $route[] = array_shift($cities);
-        $route[0]->setDistanceToPreviousCity(0);
 
         while (!empty($cities)) {
             $nextCityIndex = null;
@@ -59,7 +58,6 @@ class CityService
             }
 
             $route[] = $cities[$nextCityIndex];
-            end($route)->setDistanceToPreviousCity($nextCityDistance);
             unset($cities[$nextCityIndex]);
             $cities = array_values($cities);
         }
